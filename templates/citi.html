@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CITI Score Predictor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            background: linear-gradient(to right, #e3f2fd, #ffffff);
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            background: #004aad;
+            padding: 12px;
+        }
+
+        .navbar-brand img {
+            height: 45px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #ffcc00 !important;
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 700px;
+            margin-top: 90px;
+            text-align: center;
+        }
+
+        .card {
+            padding: 30px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-primary {
+            background-color: #004aad;
+            border: none;
+            font-size: 1.1em;
+            padding: 12px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #00337a;
+            transform: scale(1.05);
+        }
+
+        #result {
+            text-align: center;
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #004aad;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body >
+
+
+    <!-- Navbar -->
+     <img src="" alt="">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="C:\Users\nithe\OneDrive\Desktop\citi\citi_cibil\citilogo.png" alt="CIT Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('homeSection')">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('loginSection')">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('signupSection')">Sign Up</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('knowledgeSection')">Knowledge Centre</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('aboutSection')">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <div id="homeSection" class="container">
+        <div class="card">
+            <h1>Welcome to CIBIL Score Predictor</h1>
+            <p>Click below to predict your CIBIL score.</p>
+            <button class="btn btn-primary mt-3" onclick="showSection('predictionSection')">Predict CIBIL Score</button>
+        </div>
+    </div>
+
+    <!-- Prediction Section -->
+    <div id="predictionSection" class="container hidden">
+        <div class="card">
+            <h3>📊 Enter Your Details to Predict CIBIL Score</h3>
+            <form id="cibilForm">
+                <div id="inputFields"></div>
+                <button type="button" class="btn btn-primary mt-3" onclick="predictCIBIL()">Get Score</button>
+            </form>
+            <div id="result" class="mt-3"></div>
+            <button class="btn btn-secondary mt-3" onclick="showSection('homeSection')">⬅ Back to Home</button>
+        </div>
+    </div>
+
+    <!-- Login Section -->
+    <div id="loginSection" class="container hidden">
+        <div class="card">
+            <h3>🔑 Login</h3>
+            <input type="text" class="form-control my-2" placeholder="Username">
+            <input type="password" class="form-control my-2" placeholder="Password">
+            <button class="btn btn-primary mt-3">Login</button>
+        </div>
+    </div>
+
+    <!-- Signup Section -->
+    <div id="signupSection" class="container hidden">
+        <div class="card">
+            <h3>📝 Sign Up</h3>
+            <input type="text" class="form-control my-2" placeholder="Full Name">
+            <input type="email" class="form-control my-2" placeholder="Email">
+            <input type="password" class="form-control my-2" placeholder="Password">
+            <button class="btn btn-primary mt-3">Sign Up</button>
+        </div>
+    </div>
+
+    <!-- Knowledge Centre -->
+    <div id="knowledgeSection" class="container hidden">
+        <div class="card">
+            <h3>📚 Knowledge Centre</h3>
+            <p>## 🌟 **Understanding CIBIL Score – Your Credit Health Indicator!** 🌟  
+
+                🔷 **What is CIBIL Score?**  
+                CIBIL Score is a **3-digit number (300-900)** that represents your **creditworthiness**. It is used by banks and financial institutions to decide **loan approvals, credit card eligibility, and interest rates**. The **higher the score, the better your credit health!** ✅  
+                
+                ---
+                
+                ### 📊 **CIBIL Score Range & Meaning**  
+                | **Score Range** | **Credit Health** | **Loan Approval Chances** |
+                |---------------|-----------------|---------------------|
+                | 🔴 **300 - 549** | 🚨 **Poor** | ❌ High Risk of Rejection |
+                | 🟠 **550 - 649** | ⚠️ **Fair** | ⚠️ Possible, but high interest rates |
+                | 🟡 **650 - 749** | ✅ **Good** | ✅ Higher Approval Chances |
+                | 🟢 **750 - 900** | ⭐ **Excellent** | 🎯 Easy Approvals, Best Offers |
+                
+                ---
+                
+                ### 🏦 **Why is CIBIL Score Important?**  
+                ✅ **Faster Loan Approvals** – Higher score = Faster loans!  
+                ✅ **Better Interest Rates** – Save money with lower interest!  
+                ✅ **Higher Credit Limits** – Get more borrowing power!  
+                ✅ **Stronger Financial Reputation** – Banks trust you more!  
+                
+                ---
+                
+                ### 📌 **How to Improve Your CIBIL Score?**  
+                💰 **Pay EMIs & Credit Card Bills on Time** ✅  
+                📉 **Maintain Low Credit Utilization (Below 30%)**  
+                🏦 **Avoid Too Many Loan Applications** 🚫  
+                🔄 **Monitor Your Credit Report Regularly** 🕵️‍♂️  
+                💳 **Have a Healthy Mix of Credit (Loans + Credit Cards)**  
+                
+                ---
+                
+                ### 🎯 **Fun Fact:**  
+                💡 **80% of loans are approved for people with a score of 750+!**  
+                
+                **Know your CIBIL score today & take charge of your financial future!** 🚀💸  
+                
+                ---
+                
+                🔎 Need Help? 📞 Contact your nearest bank or visit **[www.cibil.com](https://www.cibil.com)** for more details! 😊</p>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div id="aboutSection" class="container hidden">
+        <div class="card">
+            <h3>ℹ About</h3>
+            <p>Citi Bank (Citibank) is a major international bank and the consumer banking division of **Citigroup**, one of the world's largest financial services organizations.  
+
+                ### **About Citi Bank**  
+                - **Founded**: 1812 (as City Bank of New York)  
+                - **Headquarters**: New York City, USA  
+                - **Parent Company**: Citigroup  
+                - **Presence**: Operates in over **160 countries**  
+                - **Services**: Retail banking, credit cards, corporate banking, wealth management, investment banking, and treasury services.  
+                
+                ### **Key Highlights**  
+                ✅ **Global Presence**: One of the most widespread banks with a presence in North America, Asia, Europe, and Latin America.  
+                ✅ **Innovation**: Pioneer in digital banking, online payments, and mobile banking solutions.  
+                ✅ **Corporate & Retail Services**: Offers loans, savings accounts, credit cards, and financial advisory services.  
+                ✅ **Citibank Credit Cards**: Known for **premium rewards, travel benefits, and cashback options**.  
+                ✅ **Strong Corporate Banking**: Works with multinational corporations, governments, and institutions.  
+                <P>
+                    ### **Citi in India**  
+                - Entered India in **1902** and has a strong presence in major cities.  
+                - Offers corporate banking, wealth management, and credit card services.  
+                - Recently, **Citi’s consumer banking business in India was acquired by Axis Bank** in 2023.
+                </P>
+                  
+                </p>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll(".container").forEach(section => {
+                section.classList.add("hidden");
+            });
+            document.getElementById(sectionId).classList.remove("hidden");
+        }
+
+        const fields = [
+            "Annual Revenue", "Annual Profit", "Existing Loan Amount", "Existing Loan Interest Rate",
+            "GST Compliance (%)", "Past Defaults", "Bank Transactions", "Ecommerce Sales",
+            "Interest Coverage Ratio", "Loan Amount Required", "Principal Investment", "Annual Investment"
+        ];
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputContainer = document.getElementById("inputFields");
+            inputContainer.innerHTML = "";
+            fields.forEach(field => {
+                const fieldName = field.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                inputContainer.innerHTML += `
+                    <div class="mb-3 text-start">
+                        <label class="form-label">${field}:</label>
+                        <input type="number" class="form-control" name="${fieldName}" required>
+                    </div>
+                `;
+            });
+        });
+
+        
+
+        async function predictCIBIL() {
+           let formData = {};
+           let isValid = true;
+
+           document.querySelectorAll("#inputFields input").forEach(input => {
+            if (!input.value.trim()) isValid = false;
+            formData[input.name] = parseFloat(input.value.trim());
+         });
+         if (!isValid) {
+            alert("⚠️ Please fill all the fields.");
+            return;
+        }
+
+    let predictedScore = Math.floor(Math.random() * 900) + 100;
+    let riskLevel = "";
+
+    if (predictedScore <= 500) {
+        riskLevel = "🔴 High Risk Annual Revenue: Low (< ₹5 Cr) & unstable → Business struggles to generate steady income.Annual Profit: Negative or < 5% margin → Business is barely profitable or making losses.Existing Loan Amount: High → Business is over-leveraged.Existing Loan Interest Rate: High (> 15%) → Lenders see high risk, charge more interest.GST Compliance (%): < 70% → Frequent tax non-compliance or underreportingPast Defaults: Multiple defaults or settlements → High risk of non-repayment.Bank Transactions: Low & irregular inflows → Cash flow problems. E-commerce Sales: Declining or negligible → Weak market presence.Interest Coverage Ratio: < 1.5 → Business struggles to cover interest payments.Loan Amount Required: Very high relative to revenue → Business heavily dependent on borrowing.Principal Investment: Low → Owners invest little, indicating low confidence.Annual Investment: Declining → Business lacks growth or expansion plans.";
+    } else if (predictedScore > 500 && predictedScore <= 700) {
+        riskLevel = "🟠 Medium RiskAnnual Revenue: Moderate & fluctuating (₹5-10 Cr) → Business is stable but has ups & downs.Annual Profit: 5-15% margin → Business is profitable but may face occasional losses.Existing Loan Amount: Moderate → Some financial burden.Existing Loan Interest Rate: Medium (10-15%) → Lenders consider it a medium-risk business.GST Compliance (%): 70-90% → Some irregularities but mostly compliant.Past Defaults: 1-2 minor defaults → Slight risk due to past delays.Bank Transactions: Moderate but inconsistent → Cash flow varies.E-commerce Sales: Stable but slow growth → Business needs stronger market positioning.Interest Coverage Ratio: 1.5 - 3.0 → Can cover interest payments but with some stress.Loan Amount Required: Relatively high compared to revenue → Higher dependence on debt.Principal Investment: Moderate → Owners invest but depend on external funding.Annual Investment: Fluctuating → Business is investing but lacks consistency.";
+    } else {
+        riskLevel = "🟢 Low Risk Annual Revenue: High & stable revenue (> ₹10 Cr) → Shows strong financial health.Annual Profit: Consistently profitable (> 15% margin) → Indicates good cash flow.Existing Loan Amount: Low or moderate → Lower financial burden.Existing Loan Interest Rate: Low (< 10%) → Shows lenders trust the business.GST Compliance (%): 90-100% → Strong tax compliance & transparency.Past Defaults: None → Builds high creditworthiness.Bank Transactions: High & stable inflows/outflows → Indicates strong financial management.E-commerce Sales: Consistently increasing → Proves business growth & market demand.Interest Coverage Ratio: High (> 3.0) → Business can easily cover interest payments.Loan Amount Required: Moderate relative to revenue → Borrowing within capacity.Principal Investment: High → Owners actively invest in the business.Annual Investment: Growing trend → Indicates expansion & reinvestment.";
+    }
+
+    document.getElementById("result").innerHTML = `
+        <p>Predicted CITI Score: <strong>${predictedScore}</strong></p>
+        <p>Risk Level: <strong>${riskLevel}</strong></p>
+    `;
+}
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <h3>CIBIL Score Predictor</h3>
+            <p>Your Trusted Credit Score Companion</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="#aboutSection">About</a>
+            <a href="#knowledgeSection">Knowledge Centre</a>
+            <a href="#contact">Contact Us</a>
+            <a href="#support">Support</a>
+        </div>
+
+        <div class="footer-apps">
+            <p>Download Our App:</p>
+            <div class="app-icons">
+                <a href="#"><img src="C:\Users\nithe\OneDrive\Desktop\citi\citi_cibil\WhatsApp Image 2025-03-07 at 11.06.43 AM.jpeg" alt="Google Play"></a>
+                <a href="#"><img src="C:\Users\nithe\OneDrive\Desktop\citi\citi_cibil\WhatsApp Image 2025-03-07 at 11.06.40 AM.jpeg" alt="App Store"></a>
+            </div>
+        </div>
+
+        <div class="footer-qr">
+            <p>Scan to Download</p>
+            <img src="C:\Users\nithe\OneDrive\Desktop\citi\citi_cibil\QR.jpeg ">
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2025 CIBIL Predictor | All Rights Reserved</p>
+    </div>
+</footer>
+
+<!-- Footer Styles -->
+<style>
+    .footer-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1000px; /* Reduce width slightly */
+    max-height: 500px;
+    margin: auto;
+    padding: 10px; /* Reduce padding */
+    margin-top: 20px; /* Shift it down slightly */
+}
+
+.footer {
+    background: #0d5fb2;
+    color: white;
+    padding: 50px 0; /* Reduce footer padding */
+    text-align: center;
+    position: relative;
+    bottom: -10px; /* Shift it down */
+    width: 100%;
+    
+}
+
+    .footer-logo h3 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .footer-logo p {
+        font-size: 14px;
+        opacity: 0.8;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-links a {
+        color: white;
+        margin: 5px 0;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s, transform 0.3s;
+    }
+
+    .footer-links a:hover {
+        color: #ffcc00;
+        transform: scale(1.1);
+    }
+
+    .footer-apps, .footer-qr {
+        text-align: center;
+    }
+
+    .footer-apps p, .footer-qr p {
+        font-weight: 600;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .app-icons img, .footer-qr img {
+        height: 50px;
+        margin: 5px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .app-icons img:hover, .footer-qr img:hover {
+        transform: scale(1.2);
+    }
+
+    .footer-bottom {
+        background: #00337a;
+        padding: 12px;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .footer-container {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .footer-links {
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            margin: 5px 10px;
+        }
+    }
+</style>
+
+</html>
